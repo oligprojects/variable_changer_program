@@ -24,17 +24,17 @@ import net.miginfocom.swing.MigLayout;
 
 
 
-public class FileEditiorGUI {
-
-	/**
-	 * @param args
-	 */
+public class FileEditiorGUI {	
 	public static void main(String[] args) {
+		
+		final Main m = new Main();
+		File[] files;
+		
+		
 		JFrame frame = new JFrame("File Editor");
 		frame.setSize(200, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JPanel panel = new JPanel();
-		int entry=0;
+		JPanel panel = new JPanel();		
 		panel.setBorder(BorderFactory.createTitledBorder("file editor "));
 		frame.add(panel);
 		
@@ -46,12 +46,11 @@ public class FileEditiorGUI {
 		JLabel ChangesLabel = new JLabel("Changes Made to file(s)");		
 				
 		
-		JTextField FindTextField = new JTextField(20);
+		final JTextField FindTextField = new JTextField(20);
 		JTextField FilePathTextField = new JTextField(20); 
-		JTextField ReplaceTextField = new JTextField(20);
-		JTextField WordCountTextField = new JTextField(20);
+		final JTextField ReplaceTextField = new JTextField(20);		
 		
-		JTextArea ChangesTextArea = new JTextArea(30,20);
+		final JTextArea ChangesTextArea = new JTextArea(30,20);
 		ChangesTextArea.setBorder(BorderFactory.createEtchedBorder());
 		
 		JButton openBtn = new JButton("Select Files");
@@ -75,8 +74,39 @@ public class FileEditiorGUI {
 		frame.setLocation(300,300);
 		frame.setSize(450, 400);		
 		frame.setVisible(true);
-			
 				
+
+		//System.out.println(files.toString());
+				
+		openBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				m.getFiles();
+				
+			}
+		});
+		
+		while(m.filesChoosen()==false)
+		{					
+		}
+		
+		files=m.collectFiles();
+		String file_path =files[0].getParent();
+		FilePathTextField.setText(files.length + " File(s) Seleceted. PATH: " + file_path);										
+		
+		executeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String find = FindTextField.getText();
+				String replace = ReplaceTextField.getText();
+				String s=m.start(find,replace);
+				ChangesTextArea.setText(s);
+			}
+		});
+										
 	}
 
 }
